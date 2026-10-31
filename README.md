@@ -44,4 +44,4 @@ src/main/resources
 ## Links
 
 - Proposal: [docs/LibraTrack_Proposal.pdf](docs/LibraTrack_Proposal.pdf)
-- UX/UI design: https://claude.ai/artifact/Se3B8pGnVpLR2x7LY9ba5Y
+- UX/UI design: https://gabit399.github.io/libratrack/docs/prototype/
