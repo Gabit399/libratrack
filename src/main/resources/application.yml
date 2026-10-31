@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: libratrack
+  profiles:
+    # "dev" uses an in-memory H2 database; switch to "postgres" for PostgreSQL
+    active: dev
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  thymeleaf:
+    cache: false
+
+server:
+  port: 8080
