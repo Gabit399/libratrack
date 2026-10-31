@@ -41,7 +41,6 @@
   .screen { display: none; min-height: 100vh; }
   .screen.active { display: block; }
 
-  /* components */
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 8px; padding: 10px 18px; font: 600 14px var(--font); cursor: pointer; background: var(--primary); color: #fff; }
   .btn:hover { background: var(--primary-dark); }
   .btn.secondary { background: var(--surface); color: var(--primary); border: 1px solid var(--primary); }
@@ -57,7 +56,6 @@
   .badge.warn { background: #fbeedd; color: #a8641f; }
   .badge.danger { background: #f6e1df; color: var(--danger); }
 
-  /* auth */
   .auth { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
   .auth .side { background: var(--primary); color: #fff; padding: 48px; display: flex; flex-direction: column; justify-content: space-between; }
   .auth .side p { opacity: .85; max-width: 360px; }
@@ -66,7 +64,6 @@
   .logo { font-weight: 800; font-size: 20px; letter-spacing: -.3px; }
   .logo b { color: var(--accent); }
 
-  /* app shell */
   .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; height: 60px; display: flex; align-items: center; gap: 28px; position: sticky; top: 0; z-index: 2; }
   .topbar .logo { color: var(--primary); }
   .topbar nav { display: flex; gap: 4px; flex: 1; }
@@ -76,7 +73,6 @@
   .page { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; }
   .page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
 
-  /* catalog */
   .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
   .filters .input { flex: 1; min-width: 200px; }
   .filters select { width: 180px; }
@@ -88,14 +84,12 @@
   .book .meta div { font-weight: 600; font-size: 14px; }
   .book .meta small { color: var(--muted); }
 
-  /* details */
   .detail { display: grid; grid-template-columns: 260px 1fr; gap: 32px; }
   .detail .cover { height: 360px; border-radius: var(--radius); font-size: 22px; }
   .kv { display: grid; grid-template-columns: 140px 1fr; gap: 6px 12px; margin: 16px 0; font-size: 14px; }
   .kv dt { color: var(--muted); }
   .kv dd { margin: 0; }
 
-  /* table */
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th { text-align: left; color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .4px; padding: 10px 12px; border-bottom: 1px solid var(--border); }
   td { padding: 12px; border-bottom: 1px solid var(--border); }
@@ -103,14 +97,12 @@
   .stat .n { font-size: 26px; font-weight: 800; }
   .stat .l { color: var(--muted); font-size: 13px; }
 
-  /* modal & toast */
   .modal-bg { position: fixed; inset: 0; background: rgba(20,25,22,.45); display: none; align-items: center; justify-content: center; z-index: 10; padding: 16px; }
   .modal-bg.show { display: flex; }
   .modal-bg .card { max-width: 420px; width: 100%; }
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; padding: 12px 20px; border-radius: 8px; display: none; z-index: 11; font-size: 14px; }
   .toast.show { display: block; }
 
-  /* prototype helper */
   .proto-nav { position: fixed; right: 16px; bottom: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 8px; font-size: 12px; z-index: 5; box-shadow: 0 4px 14px rgba(0,0,0,.08); }
   .proto-nav select { width: auto; padding: 4px 6px; font-size: 12px; }
 
@@ -127,7 +119,6 @@
 </head>
 <body>
 
-<!-- 1. LOGIN -->
 <section class="screen" id="login">
   <div class="auth">
     <div class="side">
@@ -152,7 +143,6 @@
   </div>
 </section>
 
-<!-- 2. REGISTER -->
 <section class="screen" id="register">
   <div class="auth">
     <div class="side">
@@ -177,9 +167,7 @@
   </div>
 </section>
 
-<!-- reader top bar template is repeated per screen for simplicity -->
 
-<!-- 3. CATALOG -->
 <section class="screen" id="catalog">
   <header class="topbar">
     <span class="logo">Libra<b>Track</b></span>
@@ -208,7 +196,6 @@
   </main>
 </section>
 
-<!-- 4. BOOK DETAILS -->
 <section class="screen" id="details">
   <header class="topbar">
     <span class="logo">Libra<b>Track</b></span>
@@ -255,7 +242,6 @@
   </div>
 </section>
 
-<!-- 5. MY LOANS -->
 <section class="screen" id="loans">
   <header class="topbar">
     <span class="logo">Libra<b>Track</b></span>
@@ -278,7 +264,6 @@
   </main>
 </section>
 
-<!-- 6. PROFILE -->
 <section class="screen" id="profile">
   <header class="topbar">
     <span class="logo">Libra<b>Track</b></span>
@@ -304,7 +289,6 @@
   </main>
 </section>
 
-<!-- 7. ADMIN DASHBOARD -->
 <section class="screen" id="admin">
   <header class="topbar">
     <span class="logo">Libra<b>Track</b> <small class="muted" style="font-weight:600">Admin</small></span>
@@ -336,7 +320,6 @@
   </main>
 </section>
 
-<!-- 8. ADD BOOK -->
 <section class="screen" id="addbook">
   <header class="topbar">
     <span class="logo">Libra<b>Track</b> <small class="muted" style="font-weight:600">Admin</small></span>
