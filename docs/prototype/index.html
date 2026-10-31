@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LibraTrack Prototype</title>
+<style>
+  :root {
+    --primary: #2f5d50;
+    --primary-dark: #22463c;
+    --primary-soft: #e6efeb;
+    --accent: #d98b3a;
+    --bg: #f6f5f1;
+    --surface: #ffffff;
+    --text: #1f2421;
+    --muted: #6b726e;
+    --border: #e1dfd8;
+    --danger: #b4443a;
+    --ok: #2f7d4f;
+    --radius: 10px;
+    --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --primary: #5fa38f; --primary-dark: #4b8a77; --primary-soft: #23352f;
+      --bg: #151816; --surface: #1e2220; --text: #e8ebe9; --muted: #9aa39e; --border: #323835;
+    }
+  }
+  :root[data-theme="dark"] {
+    --primary: #5fa38f; --primary-dark: #4b8a77; --primary-soft: #23352f;
+    --bg: #151816; --surface: #1e2220; --text: #e8ebe9; --muted: #9aa39e; --border: #323835;
+  }
+  .input, select, textarea { background: var(--surface) !important; }
+  .auth .side { background: #2f5d50 !important; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.5; }
+  a { color: var(--primary); text-decoration: none; cursor: pointer; }
+  h1 { font-size: 26px; margin: 0 0 4px; }
+  h2 { font-size: 19px; margin: 0 0 12px; }
+  .muted { color: var(--muted); }
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: block; }
+
+  /* components */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 8px; padding: 10px 18px; font: 600 14px var(--font); cursor: pointer; background: var(--primary); color: #fff; }
+  .btn:hover { background: var(--primary-dark); }
+  .btn.secondary { background: var(--surface); color: var(--primary); border: 1px solid var(--primary); }
+  .btn.ghost { background: transparent; color: var(--muted); }
+  .btn.danger { background: var(--danger); }
+  .btn.block { width: 100%; }
+  .field { display: block; margin-bottom: 14px; }
+  .field span { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font: 14px var(--font); background: #fff; color: var(--text); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+  .badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 999px; }
+  .badge.ok { background: #e3f2e8; color: var(--ok); }
+  .badge.warn { background: #fbeedd; color: #a8641f; }
+  .badge.danger { background: #f6e1df; color: var(--danger); }
+
+  /* auth */
+  .auth { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .auth .side { background: var(--primary); color: #fff; padding: 48px; display: flex; flex-direction: column; justify-content: space-between; }
+  .auth .side p { opacity: .85; max-width: 360px; }
+  .auth .form { display: flex; align-items: center; justify-content: center; padding: 32px 16px; }
+  .auth .form .card { width: 100%; max-width: 380px; padding: 32px; }
+  .logo { font-weight: 800; font-size: 20px; letter-spacing: -.3px; }
+  .logo b { color: var(--accent); }
+
+  /* app shell */
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; height: 60px; display: flex; align-items: center; gap: 28px; position: sticky; top: 0; z-index: 2; }
+  .topbar .logo { color: var(--primary); }
+  .topbar nav { display: flex; gap: 4px; flex: 1; }
+  .topbar nav a { padding: 8px 12px; border-radius: 8px; color: var(--muted); font-weight: 600; font-size: 14px; }
+  .topbar nav a.on { background: var(--primary-soft); color: var(--primary); }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 13px; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; }
+  .page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+
+  /* catalog */
+  .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .filters .input { flex: 1; min-width: 200px; }
+  .filters select { width: 180px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; }
+  .book { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: transform .15s; }
+  .book:hover { transform: translateY(-3px); }
+  .cover { height: 200px; display: grid; place-items: center; color: #fff; font-weight: 700; text-align: center; padding: 16px; font-size: 16px; }
+  .book .meta { padding: 12px 14px; }
+  .book .meta div { font-weight: 600; font-size: 14px; }
+  .book .meta small { color: var(--muted); }
+
+  /* details */
+  .detail { display: grid; grid-template-columns: 260px 1fr; gap: 32px; }
+  .detail .cover { height: 360px; border-radius: var(--radius); font-size: 22px; }
+  .kv { display: grid; grid-template-columns: 140px 1fr; gap: 6px 12px; margin: 16px 0; font-size: 14px; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; }
+
+  /* table */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .4px; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  td { padding: 12px; border-bottom: 1px solid var(--border); }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+  .stat .n { font-size: 26px; font-weight: 800; }
+  .stat .l { color: var(--muted); font-size: 13px; }
+
+  /* modal & toast */
+  .modal-bg { position: fixed; inset: 0; background: rgba(20,25,22,.45); display: none; align-items: center; justify-content: center; z-index: 10; padding: 16px; }
+  .modal-bg.show { display: flex; }
+  .modal-bg .card { max-width: 420px; width: 100%; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; padding: 12px 20px; border-radius: 8px; display: none; z-index: 11; font-size: 14px; }
+  .toast.show { display: block; }
+
+  /* prototype helper */
+  .proto-nav { position: fixed; right: 16px; bottom: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 8px; font-size: 12px; z-index: 5; box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+  .proto-nav select { width: auto; padding: 4px 6px; font-size: 12px; }
+
+  @media (max-width: 760px) {
+    .auth { grid-template-columns: 1fr; }
+    .auth .side { display: none; }
+    .detail { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .topbar { gap: 12px; padding: 0 16px; overflow-x: auto; }
+    .page { padding: 20px 16px 60px; }
+    .table-wrap { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. LOGIN -->
+<section class="screen" id="login">
+  <div class="auth">
+    <div class="side">
+      <div class="logo">Libra<b>Track</b></div>
+      <div>
+        <h1 style="font-size:34px">Your university library, online.</h1>
+        <p>Search the catalog, reserve books, and track due dates — without waiting in line.</p>
+      </div>
+      <small style="opacity:.6">© 2026 LibraTrack · Final Exam Project</small>
+    </div>
+    <div class="form">
+      <div class="card">
+        <h2>Sign in</h2>
+        <p class="muted" style="margin-top:-6px">Welcome back! Enter your account details.</p>
+        <label class="field"><span>Email</span><input class="input" placeholder="student@university.kz"></label>
+        <label class="field"><span>Password</span><input class="input" type="password" placeholder="••••••••"></label>
+        <button class="btn block" data-go="catalog">Sign in</button>
+        <p class="muted" style="text-align:center;margin:16px 0 0;font-size:14px">No account? <a data-go="register">Create one</a></p>
+        <p style="text-align:center;margin:6px 0 0;font-size:13px"><a data-go="admin">Sign in as librarian (demo)</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. REGISTER -->
+<section class="screen" id="register">
+  <div class="auth">
+    <div class="side">
+      <div class="logo">Libra<b>Track</b></div>
+      <div>
+        <h1 style="font-size:34px">Join in less than a minute.</h1>
+        <p>Create a reader account with your university email to start borrowing.</p>
+      </div>
+      <small style="opacity:.6">© 2026 LibraTrack · Final Exam Project</small>
+    </div>
+    <div class="form">
+      <div class="card">
+        <h2>Create account</h2>
+        <label class="field"><span>Full name</span><input class="input" placeholder="Aruzhan Bekova"></label>
+        <label class="field"><span>Email</span><input class="input" placeholder="student@university.kz"></label>
+        <label class="field"><span>Student ID</span><input class="input" placeholder="220103XXX"></label>
+        <label class="field"><span>Password</span><input class="input" type="password" placeholder="At least 8 characters"></label>
+        <button class="btn block" data-go="catalog" data-toast="Account created. Welcome!">Create account</button>
+        <p class="muted" style="text-align:center;margin:16px 0 0;font-size:14px">Already registered? <a data-go="login">Sign in</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- reader top bar template is repeated per screen for simplicity -->
+
+<!-- 3. CATALOG -->
+<section class="screen" id="catalog">
+  <header class="topbar">
+    <span class="logo">Libra<b>Track</b></span>
+    <nav><a class="on" data-go="catalog">Catalog</a><a data-go="loans">My loans</a><a data-go="profile">Profile</a></nav>
+    <div class="avatar" data-go="profile" style="cursor:pointer">AB</div>
+  </header>
+  <main class="page">
+    <div class="page-head">
+      <div><h1>Catalog</h1><span class="muted">1,248 books available</span></div>
+    </div>
+    <div class="filters">
+      <input class="input" placeholder="Search by title, author or ISBN…">
+      <select><option>All genres</option><option>Computer Science</option><option>Fiction</option><option>History</option></select>
+      <select><option>Available only</option><option>All</option></select>
+    </div>
+    <div class="grid">
+      <div class="book" data-go="details"><div class="cover" style="background:#2f5d50">Clean Code</div><div class="meta"><div>Clean Code</div><small>Robert C. Martin</small><br><span class="badge ok">3 available</span></div></div>
+      <div class="book" data-go="details"><div class="cover" style="background:#d98b3a">Spring in Action</div><div class="meta"><div>Spring in Action</div><small>Craig Walls</small><br><span class="badge ok">2 available</span></div></div>
+      <div class="book" data-go="details"><div class="cover" style="background:#5b6c8f">Effective Java</div><div class="meta"><div>Effective Java</div><small>Joshua Bloch</small><br><span class="badge warn">1 available</span></div></div>
+      <div class="book" data-go="details"><div class="cover" style="background:#8a4f6e">Abai Joly</div><div class="meta"><div>Abai Joly</div><small>Mukhtar Auezov</small><br><span class="badge danger">On loan</span></div></div>
+      <div class="book" data-go="details"><div class="cover" style="background:#3f7d8c">Design Patterns</div><div class="meta"><div>Design Patterns</div><small>Gamma et al.</small><br><span class="badge ok">4 available</span></div></div>
+      <div class="book" data-go="details"><div class="cover" style="background:#6f7a3d">Database System Concepts</div><div class="meta"><div>Database System Concepts</div><small>Silberschatz</small><br><span class="badge ok">5 available</span></div></div>
+      <div class="book" data-go="details"><div class="cover" style="background:#a0503c">The Pragmatic Programmer</div><div class="meta"><div>The Pragmatic Programmer</div><small>Hunt &amp; Thomas</small><br><span class="badge warn">1 available</span></div></div>
+      <div class="book" data-go="details"><div class="cover" style="background:#44546a">Sapiens</div><div class="meta"><div>Sapiens</div><small>Yuval Noah Harari</small><br><span class="badge ok">2 available</span></div></div>
+    </div>
+  </main>
+</section>
+
+<!-- 4. BOOK DETAILS -->
+<section class="screen" id="details">
+  <header class="topbar">
+    <span class="logo">Libra<b>Track</b></span>
+    <nav><a class="on" data-go="catalog">Catalog</a><a data-go="loans">My loans</a><a data-go="profile">Profile</a></nav>
+    <div class="avatar" data-go="profile" style="cursor:pointer">AB</div>
+  </header>
+  <main class="page">
+    <p><a data-go="catalog">← Back to catalog</a></p>
+    <div class="detail">
+      <div class="cover" style="background:#d98b3a">Spring in Action</div>
+      <div>
+        <span class="badge ok">2 of 4 copies available</span>
+        <h1 style="margin-top:10px">Spring in Action, 6th Edition</h1>
+        <p class="muted" style="margin-top:0">Craig Walls · Manning, 2022</p>
+        <p>A hands-on guide to the Spring Framework and Spring Boot: building web applications with Spring MVC, persisting data with Spring Data JPA, securing apps with Spring Security and creating REST APIs.</p>
+        <dl class="kv">
+          <dt>ISBN</dt><dd>978-1617297571</dd>
+          <dt>Genre</dt><dd>Computer Science</dd>
+          <dt>Pages</dt><dd>520</dd>
+          <dt>Shelf</dt><dd>Hall B · Shelf 14</dd>
+          <dt>Loan period</dt><dd>14 days</dd>
+        </dl>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" data-modal="confirm">Reserve this book</button>
+          <button class="btn secondary" data-toast="Added to your wishlist">Add to wishlist</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <div class="modal-bg" id="confirm">
+    <div class="card">
+      <h2>Confirm reservation</h2>
+      <p><b>Spring in Action, 6th Edition</b></p>
+      <dl class="kv" style="grid-template-columns:120px 1fr">
+        <dt>Pick up by</dt><dd>Nov 3, 2026</dd>
+        <dt>Due date</dt><dd>Nov 17, 2026</dd>
+        <dt>Location</dt><dd>Hall B · Shelf 14</dd>
+      </dl>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn ghost" data-close>Cancel</button>
+        <button class="btn" data-go="loans" data-toast="Reservation confirmed!">Confirm</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. MY LOANS -->
+<section class="screen" id="loans">
+  <header class="topbar">
+    <span class="logo">Libra<b>Track</b></span>
+    <nav><a data-go="catalog">Catalog</a><a class="on" data-go="loans">My loans</a><a data-go="profile">Profile</a></nav>
+    <div class="avatar" data-go="profile" style="cursor:pointer">AB</div>
+  </header>
+  <main class="page">
+    <div class="page-head"><div><h1>My loans</h1><span class="muted">Track reservations, due dates and history</span></div></div>
+    <div class="card table-wrap" style="padding:0">
+      <table>
+        <thead><tr><th>Book</th><th>Reserved</th><th>Due date</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><b>Spring in Action</b><br><small class="muted">Craig Walls</small></td><td>Oct 31, 2026</td><td>Nov 17, 2026</td><td><span class="badge warn">Reserved</span></td><td><button class="btn ghost" data-toast="Reservation cancelled">Cancel</button></td></tr>
+          <tr><td><b>Clean Code</b><br><small class="muted">Robert C. Martin</small></td><td>Oct 20, 2026</td><td>Nov 3, 2026</td><td><span class="badge ok">Borrowed</span></td><td><button class="btn secondary" data-toast="Loan extended by 7 days">Extend</button></td></tr>
+          <tr><td><b>Effective Java</b><br><small class="muted">Joshua Bloch</small></td><td>Oct 1, 2026</td><td>Oct 15, 2026</td><td><span class="badge danger">Overdue</span></td><td></td></tr>
+          <tr><td><b>Design Patterns</b><br><small class="muted">Gamma et al.</small></td><td>Sep 2, 2026</td><td>Sep 16, 2026</td><td><span class="badge" style="background:#eceae4;color:var(--muted)">Returned</span></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</section>
+
+<!-- 6. PROFILE -->
+<section class="screen" id="profile">
+  <header class="topbar">
+    <span class="logo">Libra<b>Track</b></span>
+    <nav><a data-go="catalog">Catalog</a><a data-go="loans">My loans</a><a class="on" data-go="profile">Profile</a></nav>
+    <div class="avatar">AB</div>
+  </header>
+  <main class="page" style="max-width:640px">
+    <h1>Profile</h1>
+    <p class="muted">Manage your personal information</p>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+        <div class="avatar" style="width:56px;height:56px;font-size:18px">AB</div>
+        <div><b>Aruzhan Bekova</b><br><small class="muted">Reader · since Sep 2026</small></div>
+      </div>
+      <label class="field"><span>Full name</span><input class="input" value="Aruzhan Bekova"></label>
+      <label class="field"><span>Email</span><input class="input" value="a.bekova@university.kz"></label>
+      <label class="field"><span>Student ID</span><input class="input" value="220103045"></label>
+      <div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap">
+        <button class="btn" data-toast="Profile saved">Save changes</button>
+        <button class="btn ghost" data-go="login">Log out</button>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- 7. ADMIN DASHBOARD -->
+<section class="screen" id="admin">
+  <header class="topbar">
+    <span class="logo">Libra<b>Track</b> <small class="muted" style="font-weight:600">Admin</small></span>
+    <nav><a class="on" data-go="admin">Dashboard</a><a data-go="addbook">Add book</a></nav>
+    <a data-go="login" class="muted" style="font-size:14px;font-weight:600">Log out</a>
+  </header>
+  <main class="page">
+    <div class="page-head">
+      <div><h1>Librarian dashboard</h1><span class="muted">Overview of books and loans</span></div>
+      <button class="btn" data-go="addbook">+ Add book</button>
+    </div>
+    <div class="stats">
+      <div class="card stat"><div class="n">1,248</div><div class="l">Books in catalog</div></div>
+      <div class="card stat"><div class="n">312</div><div class="l">Active loans</div></div>
+      <div class="card stat"><div class="n" style="color:var(--danger)">17</div><div class="l">Overdue</div></div>
+      <div class="card stat"><div class="n">845</div><div class="l">Registered readers</div></div>
+    </div>
+    <div class="card table-wrap" style="padding:0">
+      <div style="padding:16px 16px 0"><h2>Pending reservations</h2></div>
+      <table>
+        <thead><tr><th>Reader</th><th>Book</th><th>Requested</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>Aruzhan Bekova</td><td>Spring in Action</td><td>Oct 31, 2026</td><td><button class="btn" data-toast="Marked as issued">Issue</button></td></tr>
+          <tr><td>Daniyar Seitkali</td><td>Database System Concepts</td><td>Oct 30, 2026</td><td><button class="btn" data-toast="Marked as issued">Issue</button></td></tr>
+          <tr><td>Madina Omarova</td><td>Clean Code</td><td>Oct 29, 2026</td><td><button class="btn" data-toast="Marked as issued">Issue</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</section>
+
+<!-- 8. ADD BOOK -->
+<section class="screen" id="addbook">
+  <header class="topbar">
+    <span class="logo">Libra<b>Track</b> <small class="muted" style="font-weight:600">Admin</small></span>
+    <nav><a data-go="admin">Dashboard</a><a class="on" data-go="addbook">Add book</a></nav>
+    <a data-go="login" class="muted" style="font-size:14px;font-weight:600">Log out</a>
+  </header>
+  <main class="page" style="max-width:640px">
+    <p><a data-go="admin">← Back to dashboard</a></p>
+    <h1>Add a new book</h1>
+    <p class="muted">All fields are validated on the server (Spring Validation).</p>
+    <div class="card">
+      <label class="field"><span>Title *</span><input class="input" placeholder="e.g. Spring in Action"></label>
+      <label class="field"><span>Author *</span><input class="input" placeholder="e.g. Craig Walls"></label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <label class="field"><span>ISBN *</span><input class="input" placeholder="978-…"></label>
+        <label class="field"><span>Copies *</span><input class="input" type="number" value="1"></label>
+      </div>
+      <label class="field"><span>Genre</span><select><option>Computer Science</option><option>Fiction</option><option>History</option></select></label>
+      <label class="field"><span>Description</span><textarea rows="4" placeholder="Short summary"></textarea></label>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn ghost" data-go="admin">Cancel</button>
+        <button class="btn" data-go="admin" data-toast="Book added to catalog">Save book</button>
+      </div>
+    </div>
+  </main>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<div class="proto-nav">
+  Screen:
+  <select id="jump">
+    <option value="login">1. Login</option>
+    <option value="register">2. Register</option>
+    <option value="catalog">3. Catalog</option>
+    <option value="details">4. Book details</option>
+    <option value="loans">5. My loans</option>
+    <option value="profile">6. Profile</option>
+    <option value="admin">7. Admin dashboard</option>
+    <option value="addbook">8. Add book</option>
+  </select>
+</div>
+
+<script>
+  const jump = document.getElementById('jump');
+  function show(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+    document.querySelectorAll('.modal-bg').forEach(m => m.classList.remove('show'));
+    jump.value = id;
+    window.scrollTo(0, 0);
+    if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
+  }
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toast.timer); toast.timer = setTimeout(() => t.classList.remove('show'), 2000);
+  }
+  document.addEventListener('click', e => {
+    const el = e.target.closest('[data-go],[data-toast],[data-modal],[data-close]');
+    if (!el) return;
+    if (el.dataset.modal) document.getElementById(el.dataset.modal).classList.add('show');
+    if (el.hasAttribute('data-close')) el.closest('.modal-bg').classList.remove('show');
+    if (el.dataset.go) show(el.dataset.go);
+    if (el.dataset.toast) toast(el.dataset.toast);
+  });
+  jump.addEventListener('change', () => show(jump.value));
+  show(location.hash.slice(1) || 'login');
+</script>
+</body>
+</html>

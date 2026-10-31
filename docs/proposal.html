@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LibraTrack Project Proposal</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1f2421; font-size: 10.5pt; line-height: 1.5; margin: 0; }
+  h1 { font-size: 24pt; margin: 0; color: #2f5d50; }
+  h2 { font-size: 14pt; color: #2f5d50; border-bottom: 2px solid #2f5d50; padding-bottom: 3px; margin: 22px 0 10px; page-break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 14px 0 6px; page-break-after: avoid; }
+  p { margin: 0 0 8px; }
+  ul, ol { margin: 0 0 8px; padding-left: 20px; }
+  li { margin-bottom: 2px; }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 12px; font-size: 9.5pt; page-break-inside: auto; }
+  tr { page-break-inside: avoid; }
+  th { background: #2f5d50; color: #fff; text-align: left; padding: 6px 8px; font-weight: 600; }
+  td { border-bottom: 1px solid #ddd; padding: 6px 8px; vertical-align: top; }
+  tr:nth-child(even) td { background: #f6f5f1; }
+  code { font-family: Menlo, Consolas, monospace; font-size: 9pt; background: #eef2f0; padding: 1px 4px; border-radius: 3px; }
+  .cover { height: 245mm; display: flex; flex-direction: column; justify-content: space-between; page-break-after: always; }
+  .cover .band { background: #2f5d50; color: #fff; padding: 30px; border-radius: 8px; }
+  .cover .band h1 { color: #fff; font-size: 34pt; }
+  .cover .band .accent { color: #f0b071; }
+  .info td:first-child { width: 34%; font-weight: 600; }
+  .note { background: #fbeedd; border-left: 4px solid #d98b3a; padding: 8px 12px; margin: 8px 0 12px; font-size: 9.5pt; }
+  .box { border: 1px solid #ddd; border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; }
+  .page-break { page-break-before: always; }
+  .fig { text-align: center; margin: 8px 0 4px; page-break-inside: avoid; }
+  .caption { text-align: center; font-size: 9pt; color: #6b726e; margin-bottom: 12px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div>
+    <p style="color:#6b726e;margin-bottom:6px">Development of Web Applications in Java Spring · Laboratory Work 7</p>
+    <div class="band">
+      <p style="opacity:.8;margin:0 0 6px">Final Exam Project Proposal</p>
+      <h1>Libra<span class="accent">Track</span></h1>
+      <p style="font-size:14pt;margin:6px 0 0">University Library Management System</p>
+    </div>
+  </div>
+  <table class="info">
+    <tr><td>Discipline</td><td>Development of Web Applications in Java Spring</td></tr>
+    <tr><td>Work format</td><td>Individual (1 student)</td></tr>
+    <tr><td>Student</td><td>Gabit Mukan</td></tr>
+    <tr><td>Group</td><td>[Group]</td></tr>
+    <tr><td>Instructor</td><td>[Instructor name]</td></tr>
+    <tr><td>UX/UI design (prototype)</td><td>https://claude.ai/artifact/Se3B8pGnVpLR2x7LY9ba5Y</td></tr>
+    <tr><td>GitHub repository</td><td>https://github.com/Gabit399/libratrack</td></tr>
+    <tr><td>Date</td><td>October 31, 2026</td></tr>
+  </table>
+</section>
+
+<!-- TASK 1 -->
+<h2>1. Project Description</h2>
+<h3>1.1 Project title</h3>
+<p><b>LibraTrack — University Library Management System</b></p>
+
+<h3>1.2 Project description</h3>
+<p id="desc">LibraTrack is a web-based library management system for a university library, built with Java Spring Boot. Many campus libraries still rely on paper cards and spreadsheets: students cannot check whether a book is available without visiting the library, librarians record every loan by hand, and overdue books are difficult to track. LibraTrack moves this whole process online.</p>
+<p>Readers register with their university email, search the catalog by title, author, ISBN or genre, see how many copies of each book are currently available and reserve a copy for pickup. A personal “My loans” page shows active reservations, borrowed books, due dates and overdue items, and allows the reader to extend a loan once. Librarians work in a separate dashboard where they add, edit and remove books, manage the number of copies, issue reserved books, register returns and monitor statistics such as active and overdue loans.</p>
+<p>The application follows the layered Spring architecture (Controller → Service → Repository) and stores its data in a PostgreSQL database through Spring Data JPA. Pages are rendered on the server with Thymeleaf, access is protected by Spring Security with two roles (READER and LIBRARIAN), and all user input is validated with Spring Validation. The project is developed individually by one student using Git and GitHub.</p>
+
+<h3>1.3 Main objectives</h3>
+<ol>
+  <li>Provide an online catalog with search and filtering that shows real-time book availability.</li>
+  <li>Digitise the reservation → issue → return lifecycle of a book loan.</li>
+  <li>Give readers a personal space to track loans, due dates and overdue books.</li>
+  <li>Give librarians tools to manage the book collection and loans in one place.</li>
+  <li>Apply a clean layered Spring Boot architecture with a relational database, validation, security and tests.</li>
+</ol>
+
+<h3>1.4 Target users</h3>
+<table>
+  <tr><th style="width:22%">User</th><th>Needs</th></tr>
+  <tr><td><b>Reader</b> (students, teachers)</td><td>Find books quickly, know whether a copy is available, reserve it online, see due dates and avoid fines.</td></tr>
+  <tr><td><b>Librarian</b> (administrator)</td><td>Maintain the catalog, process reservations, register issues and returns, see overdue loans and basic statistics.</td></tr>
+</table>
+
+<h3>1.5 Problem the application solves</h3>
+<ul>
+  <li>No way to check book availability remotely — readers waste time visiting the library for books that are already on loan.</li>
+  <li>Manual paper or spreadsheet records are slow, error-prone and easy to lose.</li>
+  <li>Due dates are not tracked automatically, so overdue books are noticed late.</li>
+  <li>Librarians have no quick overview of how the collection is used.</li>
+</ul>
+
+<h3>1.6 Functional requirements</h3>
+<table>
+  <tr><th style="width:8%">ID</th><th>Requirement</th><th style="width:16%">Role</th></tr>
+  <tr><td>FR-1</td><td>The system shall allow a user to register with full name, email, student ID and password, and to log in / log out.</td><td>Guest</td></tr>
+  <tr><td>FR-2</td><td>The system shall display the book catalog with search by title, author or ISBN and filters by genre and availability.</td><td>Reader</td></tr>
+  <tr><td>FR-3</td><td>The system shall show a book details page with description, ISBN, shelf location and number of available copies.</td><td>Reader</td></tr>
+  <tr><td>FR-4</td><td>The system shall allow a reader to reserve an available book; the number of available copies decreases automatically.</td><td>Reader</td></tr>
+  <tr><td>FR-5</td><td>The system shall show the reader’s loans (reserved, borrowed, overdue, returned) with due dates, and allow cancelling a reservation or extending a loan once by 7 days.</td><td>Reader</td></tr>
+  <tr><td>FR-6</td><td>The system shall allow a librarian to create, update and delete books (CRUD) with server-side validation.</td><td>Librarian</td></tr>
+  <tr><td>FR-7</td><td>The system shall allow a librarian to issue reserved books and register returns.</td><td>Librarian</td></tr>
+  <tr><td>FR-8</td><td>The system shall mark loans as overdue after the due date and show statistics (books, active loans, overdue loans, readers) on the librarian dashboard.</td><td>Librarian</td></tr>
+  <tr><td>FR-9</td><td>The system shall restrict pages by role: readers cannot access librarian pages.</td><td>All</td></tr>
+</table>
+
+<h3>1.7 Expected results</h3>
+<ul>
+  <li>A working Spring Boot web application with at least 8 pages (see UX/UI design) connected to a PostgreSQL database.</li>
+  <li>Full reservation flow: login → search → book details → reserve → “My loans”.</li>
+  <li>Librarian dashboard with book CRUD and loan processing.</li>
+  <li>Role-based security, validated forms and clear error messages.</li>
+  <li>Unit tests for the service layer (JUnit 5, Mockito) and a Postman collection for the REST endpoints.</li>
+  <li>Source code in a public GitHub repository with README and setup instructions.</li>
+</ul>
+
+<!-- TASK 2 -->
+<h2 class="page-break">2. UX/UI Design</h2>
+<p>The interface is designed as a clickable prototype with <b>8 screens</b>. Link: <b>https://claude.ai/artifact/Se3B8pGnVpLR2x7LY9ba5Y</b>.</p>
+<table>
+  <tr><th style="width:5%">#</th><th style="width:22%">Screen</th><th>Purpose / main elements</th></tr>
+  <tr><td>1</td><td>Login</td><td>Email + password form, link to registration, demo entry for librarian.</td></tr>
+  <tr><td>2</td><td>Registration</td><td>Full name, email, student ID, password; validation messages.</td></tr>
+  <tr><td>3</td><td>Catalog</td><td>Search bar, genre and availability filters, grid of book cards with availability badges.</td></tr>
+  <tr><td>4</td><td>Book details</td><td>Cover, description, ISBN, shelf, copies available; “Reserve” button with confirmation dialog.</td></tr>
+  <tr><td>5</td><td>My loans</td><td>Table of reservations and loans with status badges; cancel / extend actions.</td></tr>
+  <tr><td>6</td><td>Profile</td><td>Edit personal data, log out.</td></tr>
+  <tr><td>7</td><td>Librarian dashboard</td><td>Statistic cards, pending reservations table with “Issue” action.</td></tr>
+  <tr><td>8</td><td>Add / edit book</td><td>Book form (title, author, ISBN, copies, genre, description) with validation.</td></tr>
+</table>
+
+<h3>Design system</h3>
+<div class="two">
+  <div class="box">
+    <b>Colors</b><br>
+    <span style="display:inline-block;width:12px;height:12px;background:#2f5d50;border-radius:2px"></span> Primary <code>#2F5D50</code><br>
+    <span style="display:inline-block;width:12px;height:12px;background:#d98b3a;border-radius:2px"></span> Accent <code>#D98B3A</code><br>
+    <span style="display:inline-block;width:12px;height:12px;background:#f6f5f1;border:1px solid #ccc;border-radius:2px"></span> Background <code>#F6F5F1</code><br>
+    <span style="display:inline-block;width:12px;height:12px;background:#2f7d4f;border-radius:2px"></span> Success <code>#2F7D4F</code> &nbsp;
+    <span style="display:inline-block;width:12px;height:12px;background:#b4443a;border-radius:2px"></span> Danger <code>#B4443A</code>
+  </div>
+  <div class="box">
+    <b>Typography &amp; components</b><br>
+    Font: Inter / system sans-serif. H1 26px bold, H2 19px, body 15px.<br>
+    Shared components: top navigation bar, primary / secondary buttons, input fields, book card, status badge, data table, confirmation modal, toast notification.
+  </div>
+</div>
+
+<h3>Main user flow — reserving a book</h3>
+<div class="fig">
+<svg width="660" height="70" viewBox="0 0 660 70" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial" font-size="11">
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#2f5d50"/></marker></defs>
+  <g fill="#e6efeb" stroke="#2f5d50" stroke-width="1.5">
+    <rect x="2" y="15" width="92" height="40" rx="6"/><rect x="115" y="15" width="92" height="40" rx="6"/><rect x="228" y="15" width="92" height="40" rx="6"/>
+    <rect x="341" y="15" width="92" height="40" rx="6"/><rect x="454" y="15" width="92" height="40" rx="6"/><rect x="567" y="15" width="90" height="40" rx="6"/>
+  </g>
+  <g fill="#1f2421" text-anchor="middle">
+    <text x="48" y="39">Login</text><text x="161" y="39">Catalog search</text><text x="274" y="39">Book details</text>
+    <text x="387" y="39">Confirm dialog</text><text x="500" y="39">Toast: success</text><text x="612" y="39">My loans</text>
+  </g>
+  <g stroke="#2f5d50" stroke-width="1.5" marker-end="url(#a)">
+    <line x1="94" y1="35" x2="113" y2="35"/><line x1="207" y1="35" x2="226" y2="35"/><line x1="320" y1="35" x2="339" y2="35"/>
+    <line x1="433" y1="35" x2="452" y2="35"/><line x1="546" y1="35" x2="565" y2="35"/>
+  </g>
+</svg>
+</div>
+<p class="caption">Figure 1. Complete user flow implemented in the clickable prototype</p>
+<p>Navigation: readers move between Catalog, My loans and Profile through the top bar; librarians between Dashboard and Add book. Every screen links back to its parent screen.</p>
+
+<!-- TASK 3 -->
+<h2>3. Technology Stack and Dependencies</h2>
+<table>
+  <tr><th style="width:22%">Component</th><th style="width:26%">Technology</th><th>Why we chose it</th></tr>
+  <tr><td>Programming language</td><td>Java 21 (LTS)</td><td>Required by the course; LTS version supported by Spring Boot 3.</td></tr>
+  <tr><td>Backend framework</td><td>Spring Boot 3.x</td><td>Auto-configuration, embedded Tomcat, starters — fast setup of a production-style app.</td></tr>
+  <tr><td>Web layer</td><td>Spring MVC / Spring Web</td><td>Controllers for HTML pages and REST endpoints.</td></tr>
+  <tr><td>Frontend</td><td>Thymeleaf, HTML5, CSS3, vanilla JavaScript</td><td>Server-side rendering integrates natively with Spring MVC and Spring Security; JS <code>fetch</code> is used for live search.</td></tr>
+  <tr><td>Database</td><td>PostgreSQL 16</td><td>Reliable open-source relational DB; our data (users, books, loans) is relational.</td></tr>
+  <tr><td>Persistence</td><td>Spring Data JPA / Hibernate</td><td>Maps entities to tables; repositories give CRUD and query methods without boilerplate SQL.</td></tr>
+  <tr><td>Build tool</td><td>Maven</td><td>Standard dependency management, generated by Spring Initializr.</td></tr>
+  <tr><td>Version control</td><td>Git / GitHub</td><td>Version history, feature branches and a public repository for review.</td></tr>
+  <tr><td>Testing</td><td>JUnit 5, Mockito, Postman</td><td>Unit tests of services; manual and collection-based testing of REST endpoints.</td></tr>
+</table>
+
+<h3>Spring Boot dependencies</h3>
+<table>
+  <tr><th style="width:32%">Dependency (artifactId)</th><th>Why it is necessary</th></tr>
+  <tr><td><code>spring-boot-starter-web</code></td><td>Spring MVC, embedded Tomcat, JSON (Jackson) — handles HTTP requests and REST API.</td></tr>
+  <tr><td><code>spring-boot-starter-data-jpa</code></td><td>Hibernate + Spring Data repositories for the Book, User and Loan entities.</td></tr>
+  <tr><td><code>spring-boot-starter-thymeleaf</code></td><td>Renders HTML templates for all pages.</td></tr>
+  <tr><td><code>postgresql</code> (driver)</td><td>JDBC driver to connect to the PostgreSQL database.</td></tr>
+  <tr><td><code>lombok</code></td><td>Generates getters, setters, constructors and builders — less boilerplate in entities and DTOs.</td></tr>
+  <tr><td><code>spring-boot-starter-validation</code></td><td>Bean Validation (<code>@NotBlank</code>, <code>@Email</code>, <code>@Size</code>, <code>@Min</code>) for registration and book forms.</td></tr>
+  <tr><td><code>spring-boot-starter-security</code></td><td>Login/logout, BCrypt password hashing, role-based access (READER / LIBRARIAN).</td></tr>
+  <tr><td><code>thymeleaf-extras-springsecurity6</code></td><td>Show or hide UI elements in templates by role (<code>sec:authorize</code>).</td></tr>
+  <tr><td><code>spring-boot-starter-test</code></td><td>JUnit 5, Mockito, AssertJ and MockMvc for unit and controller tests.</td></tr>
+  <tr><td><code>spring-boot-devtools</code> (dev only)</td><td>Automatic restart and live reload during development.</td></tr>
+</table>
+
+<!-- TASK 4 -->
+<h2>4. Team Members and Responsibilities</h2>
+<p>The project is completed <b>individually</b>, so one student is responsible for all project components: frontend, backend, database and testing.</p>
+<table>
+  <tr><th style="width:20%">Student</th><th style="width:24%">Area</th><th>Responsibilities</th></tr>
+  <tr><td rowspan="4"><b>Gabit Mukan</b></td><td>UX/UI Designer</td><td>Figma design and clickable prototype; design system (colors, typography, components).</td></tr>
+  <tr><td>Backend Developer</td><td>Spring Boot project setup; controllers, services, REST API (<code>/api/books</code>, <code>/api/loans</code>); Spring Security and roles; business rules (reservation, extension, overdue).</td></tr>
+  <tr><td>Database Developer</td><td>ER model; JPA entities and relationships; repositories and custom queries; seed data.</td></tr>
+  <tr><td>Frontend &amp; QA</td><td>Thymeleaf templates, CSS, JavaScript live search; integration; JUnit/Mockito tests and Postman collection; GitHub repository.</td></tr>
+</table>
+<p>The student understands the whole application architecture and presents all parts of the project during the Final Exam presentation.</p>
+
+<!-- TASK 5 -->
+<h2 class="page-break">5. System Architecture</h2>
+<p>LibraTrack follows the layered Spring architecture: <b>Frontend → Controller → Service → Repository → Database</b>.</p>
+<div class="fig">
+<svg width="670" height="400" viewBox="0 0 670 400" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial" font-size="11">
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#2f5d50"/></marker>
+    <marker id="al" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#d98b3a"/></marker>
+  </defs>
+  <!-- client -->
+  <rect x="10" y="10" width="650" height="56" rx="8" fill="#fbeedd" stroke="#d98b3a"/>
+  <text x="22" y="30" font-weight="bold" font-size="12">Frontend (Browser)</text>
+  <text x="22" y="48">Thymeleaf HTML pages · CSS · JavaScript (fetch for live search / reserve)</text>
+  <!-- spring boot container -->
+  <rect x="10" y="88" width="650" height="236" rx="8" fill="none" stroke="#2f5d50" stroke-dasharray="5 4"/>
+  <text x="22" y="106" font-weight="bold" fill="#2f5d50">Spring Boot application (embedded Tomcat)</text>
+  <rect x="22" y="114" width="626" height="26" rx="5" fill="#eef2f0" stroke="#9ab3aa"/>
+  <text x="335" y="131" text-anchor="middle">Spring Security filter chain — authentication, roles READER / LIBRARIAN</text>
+  <!-- controller -->
+  <rect x="22" y="150" width="626" height="44" rx="6" fill="#e6efeb" stroke="#2f5d50"/>
+  <text x="34" y="168" font-weight="bold">Controller layer</text>
+  <text x="34" y="185">AuthController · CatalogController · LoanController · AdminController (views) · BookRestController · LoanRestController (/api)</text>
+  <!-- service -->
+  <rect x="22" y="208" width="626" height="44" rx="6" fill="#e6efeb" stroke="#2f5d50"/>
+  <text x="34" y="226" font-weight="bold">Service layer</text>
+  <text x="34" y="243">UserService · BookService · LoanService (reserve, issue, return, extend, mark overdue) · @Transactional</text>
+  <!-- repository -->
+  <rect x="22" y="266" width="626" height="44" rx="6" fill="#e6efeb" stroke="#2f5d50"/>
+  <text x="34" y="284" font-weight="bold">Repository layer (Spring Data JPA)</text>
+  <text x="34" y="301">UserRepository · BookRepository · GenreRepository · LoanRepository  — work with Entities: User, Book, Genre, Loan</text>
+  <!-- db -->
+  <ellipse cx="335" cy="350" rx="130" ry="12" fill="#2f5d50"/>
+  <rect x="205" y="350" width="260" height="34" fill="#2f5d50"/>
+  <ellipse cx="335" cy="384" rx="130" ry="12" fill="#22463c"/>
+  <text x="335" y="372" text-anchor="middle" fill="#fff" font-weight="bold">PostgreSQL — users, books, genres, loans</text>
+  <!-- arrows down (request) -->
+  <g stroke="#2f5d50" stroke-width="1.6" marker-end="url(#ar)">
+    <line x1="300" y1="66" x2="300" y2="112"/>
+    <line x1="300" y1="194" x2="300" y2="206"/>
+    <line x1="300" y1="252" x2="300" y2="264"/>
+    <line x1="300" y1="310" x2="300" y2="336"/>
+  </g>
+  <!-- arrows up (response) -->
+  <g stroke="#d98b3a" stroke-width="1.6" marker-end="url(#al)">
+    <line x1="370" y1="336" x2="370" y2="312"/>
+    <line x1="370" y1="264" x2="370" y2="254"/>
+    <line x1="370" y1="206" x2="370" y2="196"/>
+    <line x1="370" y1="112" x2="370" y2="68"/>
+  </g>
+  <text x="250" y="80" fill="#2f5d50" text-anchor="end">HTTP request</text>
+  <text x="420" y="80" fill="#a8641f">HTML view / JSON</text>
+</svg>
+</div>
+<p class="caption">Figure 2. Layered architecture and data flow (green — request, orange — response)</p>
+
+<h3>Responsibilities of the layers</h3>
+<table>
+  <tr><th style="width:20%">Layer</th><th>Responsibility in LibraTrack</th></tr>
+  <tr><td><b>Controller</b></td><td>Processes HTTP requests and returns views or JSON. Example: <code>CatalogController</code> handles <code>GET /books</code> and returns the <code>catalog.html</code> view; <code>LoanRestController</code> handles <code>POST /api/loans</code> and returns a <code>LoanDto</code>. Validates input with <code>@Valid</code>, never contains business logic.</td></tr>
+  <tr><td><b>Service</b></td><td>Implements business logic: a book can be reserved only if available copies &gt; 0; a reader can have at most 5 active loans; a loan can be extended once; loans past the due date become OVERDUE (scheduled check with <code>@Scheduled</code>). Methods are <code>@Transactional</code>.</td></tr>
+  <tr><td><b>Repository</b></td><td>Handles database access via <code>JpaRepository</code> interfaces, e.g. <code>findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCase(...)</code>, <code>findByUserIdOrderByReservedAtDesc(...)</code>, <code>countByStatus(...)</code>.</td></tr>
+  <tr><td><b>Entity / Model</b></td><td>Represents application data: <code>User</code>, <code>Book</code>, <code>Genre</code>, <code>Loan</code>; DTOs and form objects transfer data between layers.</td></tr>
+  <tr><td><b>Database</b></td><td>PostgreSQL stores and manages all information; schema generated by Hibernate (<code>ddl-auto=update</code>) during development.</td></tr>
+</table>
+
+<h3>Data model (entities)</h3>
+<table>
+  <tr><th style="width:16%">Entity</th><th>Fields</th><th style="width:30%">Relationships</th></tr>
+  <tr><td>User</td><td>id, fullName, email (unique), studentId, password (BCrypt), role (READER / LIBRARIAN), createdAt</td><td>One User → many Loans</td></tr>
+  <tr><td>Book</td><td>id, title, author, isbn (unique), description, totalCopies, availableCopies, shelfLocation, coverUrl</td><td>Many Books → one Genre; one Book → many Loans</td></tr>
+  <tr><td>Genre</td><td>id, name</td><td>One Genre → many Books</td></tr>
+  <tr><td>Loan</td><td>id, reservedAt, issuedAt, dueDate, returnedAt, extended (boolean), status (RESERVED, BORROWED, OVERDUE, RETURNED, CANCELLED)</td><td>Many Loans → one User; many Loans → one Book</td></tr>
+</table>
+
+<h3>Frontend ↔ backend communication</h3>
+<p>Most pages are rendered on the server: the browser sends a request, the controller puts data into the <code>Model</code> and returns a Thymeleaf template. For interactive parts the page’s JavaScript calls REST endpoints with <code>fetch()</code> and exchanges JSON; Spring Security protects these endpoints using the same session and a CSRF token.</p>
+<table>
+  <tr><th style="width:12%">Method</th><th style="width:30%">Endpoint</th><th>Description</th><th style="width:14%">Access</th></tr>
+  <tr><td>GET</td><td><code>/api/books?q=&amp;genre=&amp;available=</code></td><td>Search books (live search on catalog)</td><td>Reader</td></tr>
+  <tr><td>GET</td><td><code>/api/books/{id}</code></td><td>Book details</td><td>Reader</td></tr>
+  <tr><td>POST</td><td><code>/api/books</code></td><td>Create a book</td><td>Librarian</td></tr>
+  <tr><td>PUT / DELETE</td><td><code>/api/books/{id}</code></td><td>Update / delete a book</td><td>Librarian</td></tr>
+  <tr><td>POST</td><td><code>/api/loans</code></td><td>Reserve a book (<code>{ "bookId": 5 }</code>)</td><td>Reader</td></tr>
+  <tr><td>GET</td><td><code>/api/loans/my</code></td><td>Current user’s loans</td><td>Reader</td></tr>
+  <tr><td>PATCH</td><td><code>/api/loans/{id}/extend</code> · <code>/cancel</code></td><td>Extend or cancel a loan</td><td>Reader</td></tr>
+  <tr><td>PATCH</td><td><code>/api/loans/{id}/issue</code> · <code>/return</code></td><td>Issue a reserved book / register return</td><td>Librarian</td></tr>
+</table>
+
+<!-- TASK 6 -->
+<h2>6. Development Roadmap</h2>
+<table>
+  <tr><th style="width:7%">Stage</th><th style="width:30%">Description</th><th>Main tasks</th><th style="width:18%">Responsible</th><th style="width:10%">Week</th></tr>
+  <tr><td>1</td><td>Project requirements and planning</td><td>Functional requirements, user roles, proposal document</td><td>Gabit Mukan</td><td>1</td></tr>
+  <tr><td>2</td><td>UX/UI design</td><td>Figma screens, design system, clickable prototype</td><td>Gabit Mukan</td><td>1–2</td></tr>
+  <tr><td>3</td><td>Spring Boot project setup</td><td>Spring Initializr, dependencies, package structure, GitHub repo, <code>application.yml</code></td><td>Gabit Mukan</td><td>2</td></tr>
+  <tr><td>4</td><td>Database and entity development</td><td>ER model, JPA entities, relationships, seed data</td><td>Gabit Mukan</td><td>3</td></tr>
+  <tr><td>5</td><td>Repository, Service, Controller implementation</td><td>Repositories, business logic, MVC + REST controllers, Spring Security</td><td>Gabit Mukan</td><td>3–4</td></tr>
+  <tr><td>6</td><td>Frontend development</td><td>Thymeleaf templates, CSS, JavaScript, validation messages</td><td>Gabit Mukan</td><td>4–5</td></tr>
+  <tr><td>7</td><td>Integration and testing</td><td>Connect UI with backend, JUnit/Mockito tests, Postman collection, bug fixing</td><td>Gabit Mukan</td><td>5–6</td></tr>
+  <tr><td>8</td><td>Final Exam presentation and demonstration</td><td>Slides, demo scenario, README</td><td>Gabit Mukan</td><td>7</td></tr>
+</table>
+
+<h2>7. Submission Links</h2>
+<table class="info">
+  <tr><td>UX/UI design (≥ 5 screens)</td><td>https://claude.ai/artifact/Se3B8pGnVpLR2x7LY9ba5Y</td></tr>
+  <tr><td>GitHub repository</td><td>https://github.com/Gabit399/libratrack</td></tr>
+</table>
+
+</body>
+</html>
