@@ -386,6 +386,11 @@
     if (el.dataset.toast) toast(el.dataset.toast);
   });
   jump.addEventListener('change', () => show(jump.value));
+  // ?figma hides the screen switcher and forces the light theme for import into Figma
+  if (new URLSearchParams(location.search).has('figma')) {
+    document.querySelector('.proto-nav').remove();
+    document.documentElement.dataset.theme = 'light';
+  }
   show(location.hash.slice(1) || 'login');
 </script>
 </body>
