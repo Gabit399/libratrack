@@ -35,18 +35,11 @@ src/main/resources
 └── application.yml
 ```
 
-## Run locally
+## Run locally (after implementation)
 
-Requirements: JDK 21+ (Maven is included as `./mvnw`).
-
-1. Open the project in IntelliJ IDEA (it is detected as a Maven project).
-2. Run `src/main/java/kz/libratrack/LibraTrackApplication.java` (green ▶ next to `main`), or in a terminal: `./mvnw spring-boot:run`
-3. Open http://localhost:8080
-
-By default the `dev` profile uses an in-memory H2 database with demo books (H2 console: http://localhost:8080/h2-console, JDBC URL `jdbc:h2:mem:libratrack`).
-
-To use PostgreSQL: create the database `libratrack` and run with the `postgres` profile:
-`SPRING_PROFILES_ACTIVE=postgres DB_USERNAME=postgres DB_PASSWORD=secret ./mvnw spring-boot:run`
+1. Create database: `createdb libratrack`
+2. Set `spring.datasource.username` / `password` in `application.yml`
+3. `./mvnw spring-boot:run` → http://localhost:8080
 
 ## Links
 
