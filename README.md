@@ -44,4 +44,5 @@ src/main/resources
 ## Links
 
 - Proposal: [docs/LibraTrack_Proposal.pdf](docs/LibraTrack_Proposal.pdf)
-- UX/UI design: https://gabit399.github.io/libratrack/docs/prototype/
+- UX/UI design (Figma): https://www.figma.com/design/zWQs0Te1pTaZl7A6Xt5tWG/LibraTrack
+- HTML prototype: https://gabit399.github.io/libratrack/docs/prototype/
